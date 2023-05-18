@@ -1,12 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Switch } from 'react-native';
+import {
+  Text,
+  View,
+  NativeBaseProvider,
+  HStack,
+  Button,
+  TextField,
+} from 'native-base';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Nice to see you</Text>
-      <StatusBar style='auto' />
-    </View>
+    <NativeBaseProvider>
+      <SafeAreaView>
+        <StatusBar style='dark' />
+        <View padding={50}>
+          <HStack justifyContent='space-between'>
+            <TextField
+              style={{ height: 100 }}
+              value=''
+              placeholder='awd'
+              width={'70%'}
+            />
+            <Button>Add Goal</Button>
+          </HStack>
+          <View></View>
+        </View>
+      </SafeAreaView>
+    </NativeBaseProvider>
   );
 }
 
