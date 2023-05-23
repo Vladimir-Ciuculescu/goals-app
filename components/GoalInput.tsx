@@ -9,6 +9,8 @@ import {
   Pressable,
   Image,
   View,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import GoalImage from '../assets/images/goal.png';
@@ -37,38 +39,40 @@ const GoalInput: React.FC<GoalInputProps> = ({
       animationType="slide"
       visible={visible}
       style={{ backgroundColor: 'red' }}>
-      <View style={{ backgroundColor: '#311b6b', flex: 1 }}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <Pressable
-            style={{ position: 'absolute', right: 32, top: 64 }}
-            onPress={onCancel}>
-            <AntDesign name="close" size={24} color="white" />
-          </Pressable>
-          <VStack
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              padding: 16,
-              gap: 8,
-            }}>
-            <Image source={GoalImage} style={{ width: 150, height: 150 }} />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{ backgroundColor: '#311b6c', flex: 1 }}>
+          <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <Pressable
+              style={{ position: 'absolute', right: 32, top: 64 }}
+              onPress={onCancel}>
+              <AntDesign name="close" size={24} color="white" />
+            </Pressable>
+            <VStack
+              style={{
+                width: '100%',
+                alignItems: 'center',
+                padding: 16,
+                gap: 8,
+              }}>
+              <Image source={GoalImage} style={{ width: 150, height: 150 }} />
 
-            <TextInput
-              style={styles.input}
-              value={input}
-              onChangeText={(e) => setInput(e)}
-            />
-            <HStack space={10}>
-              <Button
-                onPress={addGoalHandler}
-                title="Add Goal"
-                color="#b180f0"
+              <TextInput
+                style={styles.input}
+                value={input}
+                onChangeText={(e) => setInput(e)}
               />
-              <Button onPress={onCancel} title="Cancel" color="#f31282" />
-            </HStack>
-          </VStack>
-        </KeyboardAvoidingView>
-      </View>
+              <HStack space={10}>
+                <Button
+                  onPress={addGoalHandler}
+                  title="Add Goal"
+                  color="#b180f0"
+                />
+                <Button onPress={onCancel} title="Cancel" color="#f31282" />
+              </HStack>
+            </VStack>
+          </KeyboardAvoidingView>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
