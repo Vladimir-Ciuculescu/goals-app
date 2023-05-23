@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, FlatList } from 'react-native';
-import { Text, View, NativeBaseProvider, Divider } from 'native-base';
+import { SafeAreaView, StyleSheet, FlatList, Button } from 'react-native';
+import { Text, View, NativeBaseProvider } from 'native-base';
 import GoalItem from './components/GoalItem';
 import { Goal } from './interfaces/Goal';
 import GoalInput from './components/GoalInput';
 
 export default function App() {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const addGoal = (input: string) => {
     setGoals((prevGoals) => [
@@ -17,38 +18,40 @@ export default function App() {
   };
 
   const deleteGoal = (id: string | number) => {
-    console.log(id);
     setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
   };
 
-  useEffect(() => {
-    console.log(goals);
-  }, [goals]);
+  const startAddGoal = () => {
+    setModalVisible(true);
+  };
+
+  const candelAddGoal = () => {
+    setModalVisible(false);
+  };
 
   return (
     <NativeBaseProvider>
       <SafeAreaView>
-        <StatusBar style="dark" />
-
+        <StatusBar style="light" />
         <View style={{ paddingHorizontal: 10, height: '100%' }}>
-          <GoalInput addGoal={addGoal} />
-          <Divider my={5} />
+          <Button onPress={startAddGoal} title="Add goal" color="#b180f0" />
+          <GoalInput
+            visible={modalVisible}
+            addGoal={addGoal}
+            onCancel={candelAddGoal}
+          />
+
           <View>
-            <Text>List of goals</Text>
-            <View>
-              {goals.length !== 0 ? (
-                <FlatList
-                  alwaysBounceVertical={false}
-                  data={goals}
-                  renderItem={({ item }) => (
-                    <GoalItem goal={item} onDelete={deleteGoal} />
-                  )}
-                  keyExtractor={(itemData: any) => itemData.id}
-                />
-              ) : (
-                <Text>There are no goals </Text>
-              )}
-            </View>
+            {goals.length !== 0 && (
+              <FlatList
+                alwaysBounceVertical={false}
+                data={goals}
+                renderItem={({ item }) => (
+                  <GoalItem goal={item} onDelete={deleteGoal} />
+                )}
+                keyExtractor={(itemData: any) => itemData.id}
+              />
+            )}
           </View>
         </View>
       </SafeAreaView>
